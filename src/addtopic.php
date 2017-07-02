@@ -1,12 +1,24 @@
 <?php
-
-/*
-* script: add_topic.php
-* @developed by gratefulDeadty
-*/
+require 'inc/db.php';
+if(empty($_SESSION['name']))
+{
+	header('Location: login.php?action=forumlogin');
+	$ingelogd = 0;
+}else{
+	$ingelogd = 1;
+}
+error_reporting(0);
 
 require 'config.php'; 
-
+?>
+<?php include "inc/head.php" ?>
+<?php include "inc/menu.php" ?>
+<?php include "inc/headerfoto.php" ?>
+<?php include "inc/zeivak1.php" ?>
+<div class="col-9-12">
+	<div class="middentest">
+		<h1>Plaats een nieuwe topic!</h1>
+<?php
 if(empty($_GET['forum']) === true)
 {
 	$errors[] = 'Error: Forum does not exist.';
@@ -14,17 +26,17 @@ if(empty($_GET['forum']) === true)
 else
 {
 	echo '<div><form method="POST">
-	Email/Name: <input type="text" name="username"><br />
-	Post Title: <input type="text" name="title"><br />
-	Post Body: <input type="text" name="message"><br />
-	<input type="submit" name="submit" value="Submit"></div>';
+	<input readonly type="hidden" value="'. $_SESSION['name'] .' " name="username"><br />
+	Titel van Topic: <input type="text" name="title"><br />
+	Topic bericht: <input type="text" name="message"><br />
+	<input type="submit" name="submit" value="Plaats Topic!"></div>';
 }
 
 if (isset($_POST['submit']))
 {
 	if (empty($_POST['username']) || empty($_POST['title']) || empty($_POST['message']))
 	{
-		$errors[] = 'Error: All fields are required to post.';
+		$errors[] = 'Error: U moet alle velden invullen.';
 	}
 	else
 	{
@@ -37,8 +49,8 @@ if (isset($_POST['submit']))
                         $created = date('Y-m-d H:i:s');
 			$forums->addTopic($username,$title,$message,$whatforum,$created,$postcount);
                         $newtopicid = $connect->lastInsertId();
-			echo '<p>Thank you, your topic has been added to the '.htmlspecialchars($_GET['forum'],ENT_QUOTES).' forum.</p>';
-			echo '<br /><a href="forum.php">Back to main board</a> <font color="#898989">or click <a href="topic.php?id='.$newtopicid.'">here</a>';
+			echo '<p>Bedankt! Uw topic is succesvol toegevoegd!</p>';
+			echo '<br /><a href="forum.php">Terug na het forum</a> <font color="#898989">of klik <a href="topic.php?id='.$newtopicid.'">hier om uw topic te bekijken</a>';
 		}
 	}
 }
@@ -46,6 +58,19 @@ if (isset($_POST['submit']))
 //displaying all errors from the $errors[] array.
 if (empty($errors) === false)
 { 
-	echo ' '.implode($errors).' ';
+	echo ' <font color="red">'.implode($errors).'</font> ';
 }
 ?>
+	</div>
+</div>
+
+
+<?php include "inc/footer.php" ?>
+
+
+
+
+</body>
+
+</html>
+

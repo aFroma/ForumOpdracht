@@ -80,15 +80,8 @@ if (empty($_GET['forum']))
 
 			if ($_GET['forum'])
 			{
-			if (count($topics) == 0)
-			{
-				echo '<p>No topics have been found under the '.htmlspecialchars($_GET['forum'],ENT_QUOTES).'</a> forum.</p>';
-				echo '<br /><br /><a href="addtopic.php?forum='.htmlspecialchars($_GET['forum'],ENT_QUOTES).'">Add Topic</a>';
-				die();
-			}
-			else
-			{
-			?>
+				?>
+
 			<?php include "inc/head.php" ?>
 			<?php include "inc/menu.php" ?>
 			<?php include "inc/headerfoto.php" ?>
@@ -99,7 +92,16 @@ if (empty($_GET['forum']))
 			<div class="col-9-12">
 				<div class="middentest">
 					<h1>MotocrossForum.nl</h1>
-
+					<?php
+					if (count($topics) == 0)
+					{
+						echo '<p>No topics have been found under the '.htmlspecialchars($_GET['forum'],ENT_QUOTES).'</a> forum.</p>';
+						echo '<br /><br /><a href="addtopic.php?forum='.htmlspecialchars($_GET['forum'],ENT_QUOTES).'">Add Topic</a>';
+						die();
+					}
+					else
+					{
+					?>
 
 					<!--        <tr>-->
 					<!--            <td class="tg-yw4l"><img src="images/board.png"/></td>-->
@@ -147,7 +149,6 @@ if (empty($_GET['forum']))
 						$topic_starter = $topic['starter']; //topic starter.
 						$topic_lastpost = $topic['lastpost']; //last replied user
 						$totalposts = $forums->totalReplies2($topic_id);
-						$getImage = $forums->getAvatar();
 						if ($topic['sticky'] == '1')
 						{
 							$sticky = 'STICKY';
@@ -160,7 +161,7 @@ if (empty($_GET['forum']))
 					
 						
 						
-			<tr style="background-color:'.$trColor.';"><td>'.$sticky.'<a href="topic.php?id='.$topic_id.'">' .$topic_title .  ' ' .$getImage.  '</td><td><img onerror="this.src=\'images/no_avatar.jpg\'" width="30" height="30" src="444"/> '.$topic_starter.'</td><td>'.$totalposts.'</td><td>Last post by '.$topic_lastpost.'</td>';
+			<tr style="background-color:'.$trColor.';"><td>'.$sticky.'<a href="topic.php?id='.$topic_id.'">' .$topic_title .  ' </td><td><img onerror="this.src=\'images/no_avatar.jpg\'" width="30" height="30" src="444"/> '.$topic_starter.'</td><td>'.$totalposts.'</td><td>Last post by '.$topic_lastpost.'</td>';
 						++$color;
 					} //end foreach()
 
